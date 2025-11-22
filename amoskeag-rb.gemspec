@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = "amoskeag-rb"
   spec.version       = Amoskeag::VERSION
   spec.authors       = ["Durable Programming"]
-  spec.email         = ["contact@example.com"]
+  spec.email         = ["djberube@durableprogramming.com"]
 
   spec.summary       = "Ruby bindings for Amoskeag - a secure, functional DSL for business rules"
   spec.description   = <<~DESC
@@ -42,13 +42,13 @@ Gem::Specification.new do |spec|
 
   # Runtime dependencies
   spec.add_runtime_dependency "json", "~> 2.0"
+  spec.add_runtime_dependency "rb_sys", "~> 0.9"
 
   # Development dependencies
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rake-compiler", "~> 1.2"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "yard", "~> 0.9"
-  spec.add_development_dependency "rb_sys", "~> 0.9"
 
   # Post-install message
   spec.post_install_message = <<~MSG
