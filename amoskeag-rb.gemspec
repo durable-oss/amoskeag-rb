@@ -30,8 +30,7 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir[
     "lib/**/*.rb",
-    "amoskeag/**/*.{c,h,rb,rs}",
-    "amoskeag/**/Cargo.toml",
+    "ext/**/*",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
