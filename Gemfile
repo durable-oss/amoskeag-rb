@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# Specify your gem's dependencies in amoskeag-rb.gemspec
+gemspec
+
+gem "openssl", "~> 3.3"
+gem "bigdecimal"
