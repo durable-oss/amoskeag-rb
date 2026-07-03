@@ -3,19 +3,21 @@
 require 'json'
 require_relative 'amoskeag-rb/version'
 
-# Load the native extension
+# Load the native extension.
+#
+# Precompiled platform gems install the binary under a per-ABI directory
+# (lib/amoskeag-rb/<ruby_major.minor>/amoskeag_native.so) so a single gem can
+# carry binaries for several Ruby versions. We try that first, then fall back to
+# the flat layouts used by a freshly `rake compile`d source checkout.
 begin
-  # Try relative path first (for development)
+  ruby_abi = RUBY_VERSION[/\d+\.\d+/]
+  require_relative "amoskeag-rb/#{ruby_abi}/amoskeag_native"
+rescue LoadError
   begin
-    require_relative '../lib/amoskeag_native'
+    require_relative 'amoskeag-rb/amoskeag_native'
   rescue LoadError
-    # Fall back to standard require (for installed gem)
     require 'amoskeag_native'
   end
-rescue LoadError => e
-  raise LoadError, "Failed to load amoskeag_native extension. " \
-                   "Make sure the gem is properly installed and compiled. " \
-                   "Original error: #{e.message}"
 end
 
 # Amoskeag - A secure, functional DSL for business rules

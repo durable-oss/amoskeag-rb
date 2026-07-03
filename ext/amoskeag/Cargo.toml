@@ -3,9 +3,6 @@ name = "amoskeag_native"
 version = "0.1.0"
 edition = "2021"
 
-# Exclude from parent workspace
-[workspace]
-
 [lib]
 name = "amoskeag_native"
 crate-type = ["cdylib"]
@@ -16,7 +13,5 @@ amoskeag-stdlib-operators = { git = "https://github.com/durable-oss/amoskeag" }
 serde_json = "1.0"
 magnus = "0.7"
 
-[profile.release]
-lto = true
-opt-level = 3
-codegen-units = 1
+# NOTE: the release profile (lto, opt-level, codegen-units) lives in the
+# workspace-root Cargo.toml — Cargo ignores profile tables in member crates.

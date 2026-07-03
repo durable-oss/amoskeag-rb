@@ -33,6 +33,10 @@
     rustfmt
     clippy
 
+    # libclang is required by rb-sys/bindgen to generate the Ruby C bindings
+    libclang
+    clang
+
     # Testing and development
     git
   ];
@@ -41,6 +45,9 @@
   env = {
     # Ensure Ruby can find the headers
     RUBY_INCLUDE_DIR = "${pkgs.ruby}/include/ruby-3.2.0";
+
+    # rb-sys/bindgen needs to locate libclang.so to build the native extension
+    LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
 
     # Help the build find libraries
     LIBRARY_PATH = lib.makeLibraryPath [

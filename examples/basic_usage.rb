@@ -60,7 +60,8 @@ puts "  User age 15: #{result}"
 
 # Example 7: Financial Calculations
 puts "\n7. Financial Calculations"
-formula = "pmt(rate / 12, years * 12, -principal) | round(2)"
+# pmt(rate, nper, pv, type_) - type_ is 0 for end-of-period payments
+formula = "pmt(rate / 12, years * 12, -principal, 0) | round(2)"
 program = Amoskeag.compile(formula, [])
 
 data = {

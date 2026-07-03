@@ -180,7 +180,8 @@ Amoskeag.evaluate(program, data)
 
 ```ruby
 # Monthly payment for a $250,000 loan at 4.5% APR for 30 years
-formula = "pmt(rate / 12, years * 12, -principal) | round(2)"
+# pmt(rate, nper, pv, type_) - type_ is 0 for end-of-period payments
+formula = "pmt(rate / 12, years * 12, -principal, 0) | round(2)"
 program = Amoskeag.compile(formula, [])
 
 data = {

@@ -21,16 +21,22 @@ Gem::Specification.new do |spec|
 
   spec.homepage      = "https://github.com/durable-oss/amoskeag-rb"
   spec.license       = "MIT"
-  spec.required_ruby_version = ">= 2.7.0"
+
+  # Must match the ABI versions in misc/native.yml that we build precompiled
+  # gems for. rb-sys / rake-compiler builds a fat binary per Ruby minor version.
+  spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
 
-  # Specify which files should be added to the gem when it is released.
+  # Files shipped in the gem. We deliberately exclude compiled artifacts
+  # (*.so, *.bundle, target/, Cargo.lock build state) so the source gem stays
+  # clean; precompiled platform gems add their own binary via the cross task.
   spec.files = Dir[
     "lib/**/*.rb",
-    "ext/**/*",
+    "ext/**/*.{rs,rb,toml,lock}",
+    "Cargo.toml",       # workspace root: carries the release profile + member list
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -39,11 +45,16 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.extensions    = ["ext/amoskeag/extconf.rb"]
 
-  # Runtime dependencies
+  # Runtime dependencies.
   spec.add_runtime_dependency "json", "~> 2.0"
-  spec.add_runtime_dependency "rb_sys", "~> 0.9"
 
-  # Development dependencies
+  # rb_sys is needed to compile the source gem (ext/amoskeag/extconf.rb requires
+  # rb_sys/mkmf). When building a precompiled platform gem, RbSys::ExtensionTask
+  # strips both spec.extensions and this dependency, so binary-gem users never
+  # pull rb_sys or invoke cargo.
+  spec.add_runtime_dependency "rb_sys", "~> 0.9.91"
+
+  # Development / build dependencies.
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rake-compiler", "~> 1.2"
   spec.add_development_dependency "minitest", "~> 5.0"

@@ -26,7 +26,7 @@ class EvalTest < Minitest::Test
   end
 
   def test_eval_complex_expression
-    # pmt(rate, nper, pv, fv) - fv defaults to 0 if not provided
+    # pmt(rate, nper, pv, type_) - type_ is 0 for end-of-period payments
     formula = "pmt(rate / 12, years * 12, -principal, 0) | round(2)"
     data = {
       "rate" => 0.045,

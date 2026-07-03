@@ -35,8 +35,12 @@ mkmf.log
 
 # Rust build artifacts
 /target/
-Cargo.lock
+ext/amoskeag/target/
 **/*.rs.bk
+
+# Keep the extension's Cargo.lock committed for reproducible cross-builds,
+# but ignore a stray top-level one.
+/Cargo.lock
 
 # IDE files
 /.idea/
