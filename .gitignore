@@ -38,9 +38,12 @@ mkmf.log
 ext/amoskeag/target/
 **/*.rs.bk
 
-# Keep the extension's Cargo.lock committed for reproducible cross-builds,
-# but ignore a stray top-level one.
-/Cargo.lock
+# Keep the workspace Cargo.lock committed for reproducible cross-builds. It
+# lives at the root because ext/amoskeag is a workspace *member*: Cargo resolves
+# the whole workspace against the root lockfile and never reads a member-level
+# one. A stray ext/amoskeag/Cargo.lock is dead weight that silently pins stale
+# revisions, so it is ignored rather than committed.
+ext/amoskeag/Cargo.lock
 
 # IDE files
 /.idea/

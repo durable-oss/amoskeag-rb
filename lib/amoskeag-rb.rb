@@ -70,11 +70,23 @@ module Amoskeag
       end
     end
 
+    # Numeric classes the native extension knows how to convert.
+    #
+    # BigDecimal maps to Amoskeag's exact base-10 Decimal, but bigdecimal is not
+    # loaded by default and this gem does not force it on host programs. The
+    # class is only included once something else has required it.
+    def scalar_types
+      types = [String, Integer, Float, TrueClass, FalseClass, NilClass, Symbol]
+      types << BigDecimal if defined?(BigDecimal)
+      types
+    end
+
     # Validate that data is JSON-serializable
     def validate_data(data, path = "data")
       case data
-      when String, Integer, Float, TrueClass, FalseClass, NilClass, Symbol
-        # These are valid types (note: not all Numeric, only Integer and Float)
+      when *scalar_types
+        # These are valid types (note: not all Numeric — only the ones the
+        # native extension can convert)
         data
       when Hash
         data.each do |key, value|

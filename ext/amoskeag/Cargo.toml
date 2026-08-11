@@ -13,5 +13,18 @@ amoskeag-stdlib-operators = { git = "https://github.com/durable-oss/amoskeag" }
 serde_json = "1.0"
 magnus = "0.7"
 
+# The unit tests need a Ruby VM in-process, which magnus only provides under its
+# `embed` feature (it links libruby). That link is wrong for the shipped cdylib
+# — the extension is loaded *by* Ruby and must not carry its own copy — so the
+# feature is opt-in and enabled only for `cargo test`:
+#
+#     cargo test --features embed
+#
+# It cannot be a dev-dependency feature: Cargo unifies dev- and normal-dependency
+# features within a build, so declaring it there would leak the libruby link into
+# the cdylib as well.
+[features]
+embed = ["magnus/embed"]
+
 # NOTE: the release profile (lto, opt-level, codegen-units) lives in the
 # workspace-root Cargo.toml — Cargo ignores profile tables in member crates.

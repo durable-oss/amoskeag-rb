@@ -224,15 +224,56 @@ class WrapperTest < Minitest::Test
     assert_in_delta 42 + 3.14159 - 123.456, result, 0.0001
   end
 
-  def test_validate_data_rejects_bigdecimal
+  def test_validate_data_accepts_bigdecimal
     require "bigdecimal"
     program = Amoskeag.compile("x", [])
 
-    # BigDecimal should be rejected as it's not Integer or Float
+    # BigDecimal maps to Amoskeag's exact base-10 Decimal and round-trips
+    # without going through a binary float.
     big_num = BigDecimal("123.456789")
-    assert_argument_error(/invalid type/) do
-      Amoskeag.evaluate(program, { "x" => big_num })
-    end
+    result = Amoskeag.evaluate(program, { "x" => big_num })
+
+    assert_instance_of BigDecimal, result
+    assert_equal BigDecimal("123.456789"), result
+  end
+
+  def test_bigdecimal_arithmetic_stays_exact
+    require "bigdecimal"
+    # The whole point of the Decimal type: 0.1 + 0.2 is 0.3, not
+    # 0.30000000000000004 as it is in binary floating point.
+    result = Amoskeag.eval_expression(
+      "x + y",
+      { "x" => BigDecimal("0.1"), "y" => BigDecimal("0.2") }
+    )
+
+    assert_instance_of BigDecimal, result
+    assert_equal BigDecimal("0.3"), result
+  end
+
+  def test_decimal_literal_returns_bigdecimal
+    require "bigdecimal"
+
+    result = Amoskeag.eval_expression("19.99d * 3", {})
+
+    assert_instance_of BigDecimal, result
+    assert_equal BigDecimal("59.97"), result
+  end
+
+  def test_integer_expressions_return_integers
+    # Integer literals stay exact rather than widening to Float.
+    result = Amoskeag.eval_expression("2 + 3", {})
+
+    assert_instance_of Integer, result
+    assert_equal 5, result
+  end
+
+  def test_integer_input_stays_exact
+    # Beyond 2**53 an f64 round-trip would corrupt the value.
+    big = 9_007_199_254_740_993
+    result = Amoskeag.eval_expression("x", { "x" => big })
+
+    assert_instance_of Integer, result
+    assert_equal big, result
   end
 
   def test_validate_data_rejects_rational

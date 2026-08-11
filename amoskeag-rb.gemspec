@@ -35,8 +35,9 @@ Gem::Specification.new do |spec|
   # clean; precompiled platform gems add their own binary via the cross task.
   spec.files = Dir[
     "lib/**/*.rb",
-    "ext/**/*.{rs,rb,toml,lock}",
+    "ext/**/*.{rs,rb,toml}",
     "Cargo.toml",       # workspace root: carries the release profile + member list
+    "Cargo.lock",       # workspace lock: the resolved revisions cargo builds from
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
