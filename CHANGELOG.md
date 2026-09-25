@@ -5,6 +5,23 @@ All notable changes to the amoskeag-rb gem will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-09-25
+
+### Added
+- Exact `Integer` and `BigDecimal` support. Ruby Integers and BigDecimals passed
+  in as data stay exact, and Amoskeag integer and decimal results come back as
+  `Integer` and `BigDecimal` instead of widening to `Float`.
+
+### Fixed
+- Source gem failed to compile (`non-exhaustive patterns: AmoskeagValue::Decimal
+  and AmoskeagValue::Integer not covered`). The amoskeag git dependency was not
+  pinned and the shipped member-level `Cargo.lock` was ignored by the workspace,
+  so installs built against upstream HEAD. The dependency is now pinned to a
+  fixed `rev` and the workspace `Cargo.lock` ships in the gem.
+- Precompiled platform gems announced in 0.2.0 were never published because the
+  build workflow and cross-compile config were not committed. They are now.
+- `extconf.rb` only passes `-static-libgcc` when the linker driver supports it.
+
 ## [0.2.0] - 2026-06-19
 
 ### Added
@@ -62,5 +79,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pure functional evaluation (no side effects)
 - Security-first design (immune to code injection)
 
+[0.3.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.3.0
 [0.2.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.2.0
 [0.1.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.1.0

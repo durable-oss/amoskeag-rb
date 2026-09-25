@@ -8,8 +8,8 @@ name = "amoskeag_native"
 crate-type = ["cdylib"]
 
 [dependencies]
-amoskeag = { git = "https://github.com/durable-oss/amoskeag" }
-amoskeag-stdlib-operators = { git = "https://github.com/durable-oss/amoskeag" }
+amoskeag = { git = "https://github.com/durable-oss/amoskeag", rev = "2448945b21496826e0bfb39e420b65e1cb6c1a6b" }
+amoskeag-stdlib-operators = { git = "https://github.com/durable-oss/amoskeag", rev = "2448945b21496826e0bfb39e420b65e1cb6c1a6b" }
 serde_json = "1.0"
 magnus = "0.7"
 
