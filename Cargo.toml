@@ -1,0 +1,13 @@
+# Root workspace so `cargo metadata` (run by rb_sys's ExtensionTask from the
+# gem root) can discover the native crate at ext/amoskeag. The actual crate —
+# amoskeag_native, a cdylib — lives in ext/amoskeag/Cargo.toml.
+[workspace]
+members = ["ext/amoskeag"]
+resolver = "2"
+
+# Optimized build for the shipped extension. Profiles must be declared at the
+# workspace root; Cargo ignores them in member crates.
+[profile.release]
+lto = true
+opt-level = 3
+codegen-units = 1

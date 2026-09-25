@@ -1,0 +1,21 @@
+# Single source of truth for cross-compilation targets.
+#
+# `rubies` are the Ruby ABI versions each precompiled gem supports (fat gem).
+# `platforms` are the rake-compiler / rb-sys platform tuples we ship binaries for.
+#
+# Consumed by Rakefile and rakelib/cross.rake. Keep this list in sync with the
+# matrix in .github/workflows/gem.yml.
+rubies:
+  - "3.1"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+
+platforms:
+  - x86_64-linux
+  - x86_64-linux-musl
+  - aarch64-linux
+  - aarch64-linux-musl
+  - x64-mingw-ucrt
+  - arm64-darwin
+  - x86_64-darwin
