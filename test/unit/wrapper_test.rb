@@ -384,8 +384,7 @@ class WrapperTest < Minitest::Test
     10.times do |i|
       threads << Thread.new do
         program = Amoskeag.compile("#{i} + 1", [])
-        result = Amoskeag.evaluate(program, {})
-        results << result
+        results[i] = Amoskeag.evaluate(program, {})
       end
     end
 
@@ -402,8 +401,7 @@ class WrapperTest < Minitest::Test
 
     10.times do |i|
       threads << Thread.new do
-        result = Amoskeag.eval_expression("#{i} + 1", {})
-        results << result
+        results[i] = Amoskeag.eval_expression("#{i} + 1", {})
       end
     end
 

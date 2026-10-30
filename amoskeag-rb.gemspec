@@ -53,7 +53,11 @@ Gem::Specification.new do |spec|
   # rb_sys/mkmf). When building a precompiled platform gem, RbSys::ExtensionTask
   # strips both spec.extensions and this dependency, so binary-gem users never
   # pull rb_sys or invoke cargo.
-  spec.add_runtime_dependency "rb_sys", "~> 0.9.91"
+  #
+  # oxidize-rb/actions/cross-gem picks its rbsys/<platform> Docker image from
+  # the first rb_sys version in Gemfile.lock, which is this constraint. Keep it
+  # recent enough that the image's cargo can read Cargo.lock (version 4).
+  spec.add_runtime_dependency "rb_sys", "~> 0.9.117"
 
   # Development / build dependencies.
   spec.add_development_dependency "rake", "~> 13.0"
