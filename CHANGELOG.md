@@ -5,6 +5,15 @@ All notable changes to the amoskeag-rb gem will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-10-30
+
+### Fixed
+- Precompiled macOS gems were published as `arm64-darwin-23` and
+  `x86_64-darwin-24`, which RubyGems only installs on that exact macOS version;
+  every other Mac fell back to compiling the source gem. They are now
+  cross-compiled as `arm64-darwin` and `x86_64-darwin` fat gems covering
+  Ruby 3.1 through 3.4.
+
 ## [0.4.0] - 2026-10-30
 
 0.3.0 was tagged but never published to RubyGems because its release build
@@ -94,6 +103,7 @@ failed. 0.4.0 ships everything listed under 0.3.0 plus the fixes below.
 - Pure functional evaluation (no side effects)
 - Security-first design (immune to code injection)
 
+[0.4.1]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.4.1
 [0.4.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.4.0
 [0.3.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.3.0
 [0.2.0]: https://github.com/durable-oss/amoskeag-rb/releases/tag/v0.2.0
