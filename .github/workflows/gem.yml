@@ -42,7 +42,7 @@ jobs:
         run: bundle exec rake test
 
   # ------------------------------------------------------------------ #
-  # Cross-compile precompiled native gems (Linux + Windows) via         #
+  # Cross-compile precompiled native gems (Linux, Windows, macOS) via   #
   # rb-sys-dock. Each gem is a fat binary covering every Ruby ABI.      #
   # ------------------------------------------------------------------ #
   native-gems:
@@ -57,6 +57,8 @@ jobs:
           - aarch64-linux
           - aarch64-linux-musl
           - x64-mingw-ucrt
+          - arm64-darwin
+          - x86_64-darwin
 
     steps:
       - uses: actions/checkout@v4
@@ -76,40 +78,6 @@ jobs:
         with:
           name: gem-${{ matrix.platform }}
           path: ${{ steps.cross-gem.outputs.gem-path }}
-
-  # ------------------------------------------------------------------ #
-  # Build darwin gems natively on macOS runners (no rb-sys-dock images  #
-  # exist for darwin, so we compile on the real OS).                    #
-  # ------------------------------------------------------------------ #
-  native-gems-darwin:
-    name: Build ${{ matrix.platform }}
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: arm64-darwin
-            runner: macos-14
-          - platform: x86_64-darwin
-            runner: macos-15-intel
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.4"
-          bundler-cache: true
-
-      - uses: dtolnay/rust-toolchain@stable
-
-      - name: Build native gem (${{ matrix.platform }})
-        run: bundle exec rake native gem
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: gem-${{ matrix.platform }}
-          path: pkg/*.gem
 
   # ------------------------------------------------------------------ #
   # Build the plain source gem (fallback for unsupported platforms)     #
@@ -139,7 +107,7 @@ jobs:
   publish:
     name: Publish gems
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [test, native-gems, native-gems-darwin, source-gem]
+    needs: [test, native-gems, source-gem]
     runs-on: ubuntu-latest
     environment: release
     permissions:
